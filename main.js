@@ -1,68 +1,98 @@
 let score = JSON.parse(localStorage.getItem('score')) || {
-    wins: 0,
-    losses: 0,
-    ties: 0
+  wins: 0,
+  losses: 0,
+  ties: 0
 };
 updateScore();
+document.querySelector('.rock-btn').addEventListener('click', () => playGame('rock'));
+document.querySelector('.paper-btn').addEventListener('click', () => playGame('paper'));
+document.querySelector('.scissors-btn').addEventListener('click', () => playGame('scissors'));
+document.body.addEventListener('keydown', (event) => {
+  if (event.key === 'r' || event.key === 'R') {
+    playGame('rock');
+  } else if (event.key === 'p' || event.key === 'P') {
+    playGame('paper');
+  } else if (event.key === 's' || event.key === 'S') {
+    playGame('scissors');
+  }
+});
+
 function pickComputerMove() {
-    let computerMove = ``;
-    const randomNumber = Math.random();
-    if (randomNumber >= 0 && randomNumber < 1 / 3) {
-        computerMove = `rock`;
-    } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
-        computerMove = `paper`;
-    } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
-        computerMove = `scissors`;
-    }
-    return computerMove;
+  let computerMove = ``;
+  const randomNumber = Math.random();
+  if (randomNumber >= 0 && randomNumber < 1 / 3) {
+    computerMove = `rock`;
+  } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
+    computerMove = `paper`;
+  } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
+    computerMove = `scissors`;
+  }
+  return computerMove;
 }
 function playGame(playerMove) {
-    const computerMove = pickComputerMove();
-    let result = '';
+  const computerMove = pickComputerMove();
+  let result = '';
 
-    if (playerMove === 'scissors') {
-        if (computerMove === 'rock') {
-            result = 'You lose.';
-        } else if (computerMove === 'paper') {
-            result = 'You win.';
-        } else if (computerMove === 'scissors') {
-            result = 'Tie.';
-        }
-
-    } else if (playerMove === 'paper') {
-        if (computerMove === 'rock') {
-            result = 'You win.';
-        } else if (computerMove === 'paper') {
-            result = 'Tie.';
-        } else if (computerMove === 'scissors') {
-            result = 'You lose.';
-        }
-
-    } else if (playerMove === 'rock') {
-        if (computerMove === 'rock') {
-            result = 'Tie.';
-        } else if (computerMove === 'paper') {
-            result = 'You lose.';
-        } else if (computerMove === 'scissors') {
-            result = 'You win.';
-        }
+  if (playerMove === 'scissors') {
+    if (computerMove === 'rock') {
+      result = 'You lose.';
+    } else if (computerMove === 'paper') {
+      result = 'You win.';
+    } else if (computerMove === 'scissors') {
+      result = 'Tie.';
     }
-    if (result === `You win.`) {
-        score.wins += 1;
-    } else if (result === `You lose.`) {
-        score.losses += 1;
-    } else if (result === `Tie.`) {
-        score.ties += 1;
+
+  } else if (playerMove === 'paper') {
+    if (computerMove === 'rock') {
+      result = 'You win.';
+    } else if (computerMove === 'paper') {
+      result = 'Tie.';
+    } else if (computerMove === 'scissors') {
+      result = 'You lose.';
     }
-    localStorage.setItem('score', JSON.stringify(score));
-    updateScore();
-    document.getElementById('js-result').innerHTML = result;
-    document.getElementById('js-moves').innerHTML = `
+
+  } else if (playerMove === 'rock') {
+    if (computerMove === 'rock') {
+      result = 'Tie.';
+    } else if (computerMove === 'paper') {
+      result = 'You lose.';
+    } else if (computerMove === 'scissors') {
+      result = 'You win.';
+    }
+  }
+  if (result === `You win.`) {
+    score.wins += 1;
+  } else if (result === `You lose.`) {
+    score.losses += 1;
+  } else if (result === `Tie.`) {
+    score.ties += 1;
+  }
+  localStorage.setItem('score', JSON.stringify(score));
+  updateScore();
+  document.getElementById('js-result').innerHTML = result;
+  document.getElementById('js-moves').innerHTML = `
     You
       <img class="icon" src="./${playerMove}-emoji.png" />
       <img class="icon" src="./${computerMove}-emoji.png" />
       Computer`;
 }
 function updateScore() {
-    document.getElementById('js-score').innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+  document.getElementById('js-score').innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
 }
+let isAutoPlay = false;
+let intervalId;
+const renderButtonText = document.querySelector('.autoplay-score-btn');
+function autoPlay() {
+  if (!isAutoPlay) {
+    intervalId = setInterval(() => {
+      const playerMove = pickComputerMove();
+      playGame(playerMove);
+    }, 1000);
+    renderButtonText.textContent = ' Stop AutoPlaying';
+    isAutoPlay = true;
+  } else {
+    clearInterval(intervalId);
+    renderButtonText.textContent = 'Auto Play';
+    isAutoPlay = false;
+  }
+};
