@@ -13,12 +13,10 @@
     <h2 class="title-2">Paper</h2>
     <h2 class="title-3">Scissors</h2>
     <br>
-    <button type="button" class="move-button" onclick=" playGame(`rock`);
-    "><img src="./rock-emoji.png" alt="Rock" class="icon"></button>
-    <button type="button" class="move-button" onclick="playGame(`paper`)"><img src="./paper-emoji.png" alt="Paper"
+    <button type="button" class="move-button rock-btn"><img src="./rock-emoji.png" alt="Rock" class="icon"></button>
+    <button type="button" class="move-button paper-btn"><img src="./paper-emoji.png" alt="Paper" class="icon"></button>
+    <button type="button" class="move-button scissors-btn"><img src="./scissors-emoji.png" alt="Scissors"
         class="icon"></button>
-    <button type="button" class="move-button" onclick="playGame(`scissors`);"><img src="./scissors-emoji.png"
-        alt="Scissors" class="icon"></button>
     <p id="js-result" class="result"></p>
     <p id="js-moves"></p>
     <p id="js-score" class="score"></p>
@@ -29,6 +27,7 @@
       localStorage.removeItem('score');
       updateScore();
     ">Reset Score</button>
+    <button type="button" class="autoplay-score-btn" onclick="autoPlay();">Auto Play</button>
     <script src="main.js"></script>
   </body>
 
