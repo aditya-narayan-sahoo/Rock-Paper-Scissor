@@ -52,7 +52,8 @@ h2 {
     margin-top: 60px;
 }
 
-.reset-score-btn {
+.reset-score-btn,
+.autoplay-score-btn {
     background-color: rgba(255, 255, 255, 0.886);
     border: none;
     font-size: 18px;
